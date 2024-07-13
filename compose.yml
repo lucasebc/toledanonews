@@ -2,6 +2,7 @@ services:
   laravel:
     container_name: toledanonews-laravel
     build: .
+    restart: unless-stopped
     volumes:
       - ./laravel:/var/www/html
     ports:
@@ -14,6 +15,18 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: toledanonews
 
+  # postgres_db:
+  #   image: postgres:15.2
+  #   container_name: toledanonews-postgres
+  #   restart: unless-stopped
+  #   ports:
+  #     - 5432:5432
+  #   volumes:
+  #     - ./postgresql/scripts:/docker-entrypoint-initdb.d/
+  #     - ./postgresql/data:/var/lib/postgresql/data
+  #   environment:
+  #     POSTGRES_PASSWORD: ${POSTGRESQL_PASS}
+
   phpmyadmin:
     container_name: toledanonews-phpmyadmin
     image: phpmyadmin:latest
@@ -21,3 +34,15 @@ services:
       - 9001:80
     environment:
       - PMA_ARBITRARY=1
+
+  # portainer-aula:
+  #   container_name: portainer-aula
+  #   command: -H unix:///var/run/docker.sock
+  #   image: portainer/portainer
+  #   restart: always
+  #   ports:
+  #     - 9000:9000
+  #     - 8000:8000
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - ./portainer_data:/data
